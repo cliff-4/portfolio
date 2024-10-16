@@ -1,5 +1,0 @@
-# Exclude all test files
-t.*
-
-# Exclude all images
-*.jpg
