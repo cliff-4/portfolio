@@ -5,7 +5,6 @@ import os
 load_dotenv()
 
 conn = psycopg2.connect(
-    # host="localhost", dbname="postgres", user="postgres", password="animal", port=5432
     host=os.getenv("DB_HOST"),
     dbname=os.getenv("DB_NAME"),
     user=os.getenv("DB_USER"),
@@ -14,7 +13,6 @@ conn = psycopg2.connect(
 )
 
 curr = conn.cursor()
-
 
 curr.execute(
     """
