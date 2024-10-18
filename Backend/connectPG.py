@@ -25,15 +25,15 @@ CREATE TABLE IF NOT EXISTS person (
 """
 )
 
-# curr.execute(
-#     """
-# INSERT INTO person (id, name, age, gender) VALUES
-# (5, 'Luv Singh', 23, 'm'),
-# (6, 'Samarth Singh', 21, 'm'),
-# (7, 'Aditya Mishra', 24, 'm'),
-# (8, 'Shayna Jonathan', 22, 'f');
-# """
-# )
+curr.execute(
+    """
+INSERT INTO person (id, name, age, gender) VALUES
+(5, 'Luv Singh', 23, 'm'),
+(6, 'Samarth Singh', 21, 'm'),
+(7, 'Aditya Mishra', 24, 'm'),
+(8, 'Shayna Jonathan', 22, 'f');
+"""
+)
 
 curr.execute("""SELECT * FROM person WHERE age >= 32;""")
 
