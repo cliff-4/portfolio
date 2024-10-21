@@ -1,22 +1,35 @@
 from fastapi import FastAPI, HTTPException, Path
-from typing import Optional
+from typing import Optional, List, Tuple
+from enum import Enum
 from pydantic import BaseModel
 
+import psycopg2
+import os
+from dotenv import load_dotenv
+import json
+import datetime
+
+load_dotenv()
+
+conn = psycopg2.connect(
+    host=os.getenv("DB_HOST"),
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASS"),
+    port=os.getenv("DB_PORT"),
+)
+curr = conn.cursor()
+
+
+class Project(BaseModel):
+    id: int
+    title: str
+    short_desc: str
+    long_desc: str
+    last_edited: datetime.date
+
+
 app = FastAPI()
-
-sample_data = {
-    1: {"name": "Alice", "age": 25, "roll_number": 101},
-    2: {"name": "Bob", "age": 22, "roll_number": 102},
-    3: {"name": "Charlie", "age": 23, "roll_number": 103},
-    4: {"name": "David", "age": 24, "roll_number": 104},
-    5: {"name": "Eve", "age": 21, "roll_number": 105},
-}
-
-
-class Student(BaseModel):
-    name: str
-    age: int
-    roll_number: int
 
 
 @app.get("/")
@@ -24,30 +37,23 @@ def index():
     return {"about": "blank"}
 
 
-@app.get("/student/{id}")
-def get_student(
-    id: int = Path(
-        description="The ID of the student you need",
-        ge=min(*sample_data.keys()),
-        le=max(*sample_data.keys()),
+@app.get("/project/{id}")
+def get_project(id: int):
+    curr.execute(
+        "SELECT title, short_desc, image, last_edited FROM projects WHERE project_id=%s;",
+        (id,),
     )
-):
-    return sample_data[id]
+    res = curr.fetchone()
+    # return res
+    return Project(
+        title=res[0],
+        short_desc=res[1],
+        image=res[2],
+        last_edited=res[3],
+    )
 
 
-@app.get("/get-by-name/{id}")
-def get_student(id: Optional[int] = 0, name: Optional[str] = None):
-    if id in sample_data:
-        return sample_data[id]
-    for id in sample_data:
-        if sample_data[id]["name"] == name:
-            return sample_data[id]
-    raise HTTPException(404, "Student not found")
-
-
-@app.post("/create-student/{id}")
-def create_student(id: int, student: Student):
-    if id in sample_data:
-        raise HTTPException(409, "Student already exists")
-    sample_data[id] = student.model_dump()
-    return sample_data[id]
+@app.get("/projects/")
+def get_all_projects():
+    curr.execute("SELECT * FROM projects")
+    return [Project(*x) for x in curr.fetchall()]
