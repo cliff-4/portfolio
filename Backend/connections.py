@@ -33,7 +33,7 @@ app = FastAPI()
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://172.19.0.1:5173"],  # Adjust frontend url
+    allow_origins=["http://localhost:5173"],  # Adjust frontend url
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -63,17 +63,23 @@ def get_all_projects():
 
 @app.get("/contact")
 def get_contact():
-    curr.execute("SELECT data FROM details WHERE attribute = 'contact'")
-    return curr.fetchone()[0]
+    try:
+        curr.execute("SELECT data FROM details WHERE attribute = 'contact'")
+        res = curr.fetchone()[0]
+        return res
+    except Exception as e:
+        logger.error(e)
+        return {}
 
 
 @app.get("/about")
-async def get_about():
-    if curr:
+async def get_about() -> str:
+    try:
         curr.execute("SELECT data FROM details WHERE attribute = 'homepage'")
-        return curr.fetchone()[0]
-    else:
+        res = curr.fetchone()
+        return res[0]["about"]
+    except Exception as e:
         logger.warning(
-            f"Cound not connect to {os.getenv('DB_HOST')}. Using default data"
+            f"Encountered an Error while fetching about information. Error: {e}"
         )
         return {}
