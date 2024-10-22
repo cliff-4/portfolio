@@ -3,3 +3,4 @@
 __pycache__
 .sensitive
 techs.txt
+*.ipynb
