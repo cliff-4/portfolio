@@ -18,12 +18,20 @@ export default {
       'theme4': '#91e3d5',
       'theme5': '#cdeeec',
       'theme6': '#005bb1',
+      'black' : '#000000',
+      'white' : '#ffffff'
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
+      mono: ['ui-monospace', 'SFMono-Regular', "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+      
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'bungee': "url('/img/DSCF0534.JPG')"
+      }
+    },
   },
   plugins: [],
 }
