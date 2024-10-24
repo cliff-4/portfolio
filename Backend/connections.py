@@ -4,10 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
 from dotenv import load_dotenv
 import logging
+import datetime
 
-# from typing import Optional, List, Tuple
+from typing import Optional  # , List, Tuple
+
 # from enum import Enum
-# from pydantic import BaseModel
+from pydantic import BaseModel
+
 # import datetime
 
 logger = logging.getLogger("uvicorn.error")
@@ -40,6 +43,32 @@ app.add_middleware(
 )
 
 
+class Project(BaseModel):
+    id: int
+    title: str
+    short: str
+    long: str
+    last_update: datetime.date
+    image_paths: list[str]
+
+
+class About(BaseModel):
+    about: str
+    image: str
+
+
+def ProjectMapper(rawTuple: tuple) -> Project:
+    item = Project(
+        id=rawTuple[0],
+        title=rawTuple[1],
+        short=rawTuple[2] if rawTuple[2] is not None else "Default Short Description",
+        long=rawTuple[3] if rawTuple[3] is not None else "Default Long Description",
+        last_update=rawTuple[4],
+        image_paths=rawTuple[5] if rawTuple[5] is not None else [],
+    )
+    return item
+
+
 @app.get("/")
 def index():
     return "fuck off :)"
@@ -56,9 +85,16 @@ def get_project(id: int):
 
 
 @app.get("/projects")
-def get_all_projects():
-    curr.execute("SELECT * FROM projects")
-    return curr.fetchall()
+def get_all_projects() -> list[Project]:
+    try:
+        curr.execute("SELECT * FROM projects")
+        res = curr.fetchall()
+        res = [ProjectMapper(x) for x in res]
+        res.sort(key=lambda x: x.id)
+        return res
+    except Exception as e:
+        logger.error(e)
+        return []
 
 
 @app.get("/contact")
@@ -73,13 +109,14 @@ def get_contact():
 
 
 @app.get("/about")
-async def get_about() -> str:
+async def get_about() -> About:
     try:
         curr.execute("SELECT data FROM details WHERE attribute = 'homepage'")
-        res = curr.fetchone()
-        return res[0]["about"]
+        res = curr.fetchone()[0]
+        res = About(about=res["about"], image=res["image"])
+        return res
     except Exception as e:
         logger.warning(
             f"Encountered an Error while fetching about information. Error: {e}"
         )
-        return {}
+        return ""
