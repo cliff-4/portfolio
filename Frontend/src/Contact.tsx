@@ -80,10 +80,6 @@ let ContactIcons = {
     ),
 };
 
-// const IconMap: React.FC<{ name: string }> = ({name}) => {
-//     return ContactIcons.GitHub;
-// };
-
 const ContactLine: React.FC<{ contact: contactCard }> = ({ contact }) => {
     const icon =
         contact.name in ContactIcons
