@@ -29,7 +29,6 @@ export default {
     },
     extend: {
       backgroundImage: {
-        'bungee': "url('/img/DSCF0534.JPG')"
       }
     },
   },
