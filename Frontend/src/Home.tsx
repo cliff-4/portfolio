@@ -2,18 +2,27 @@ import { useEffect, useState } from "react";
 import Window from "./Template";
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+const IMAGE_DIR = import.meta.env.VITE_IMAGE_DIR;
+
+interface AboutInfo {
+    about: string;
+    image: string;
+}
 
 export default function Home() {
     const [about, setAbout] = useState<string>();
+    const [image, setImage] = useState<string>();
 
     useEffect(() => {
         const fetchAbout = async () => {
             setAbout("Loading...");
+            setImage("default.jpg");
 
             try {
                 const response = await fetch(`${BACKEND_BASE_URL}/about`);
-                const aboutSTRING = (await response.json()) as string;
-                setAbout(aboutSTRING);
+                const aboutJSON = (await response.json()) as AboutInfo;
+                setAbout(aboutJSON.about);
+                setImage(aboutJSON.image);
                 console.log("Successfully procured About!");
             } catch (e: any) {
                 setAbout("An error occured while loading About... :(");
@@ -30,30 +39,34 @@ export default function Home() {
                 <h1 className="animate-pulse text-theme6 font-mono flex-none">
                     Who_Am_I_?
                 </h1>
-                <span className="flex-1 flex items-center">
+                <span className="max-h-[30rem]">
                     <p
                         className="
+                        max-h-full
+                        block
                             p-5
                             text-justify
                             text-xl
                             rounded-lg
                             border-4 border-theme6
+                            overflow-y-auto box-border
                         "
                     >
                         {about}
                     </p>
                 </span>
             </div>
-            <div
+            <img
                 className="
                     w-1/2 h-full
                     bg-cover bg-bottom
                     bg-clip-content
-                    bg-bungee
                     rounded-lg
-
+                    object-cover
                     "
-            ></div>
+                src={`${IMAGE_DIR}/${image}`}
+                alt=""
+            />
         </Window>
     );
 }
