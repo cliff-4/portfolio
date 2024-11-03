@@ -3,7 +3,6 @@ import Window from "./Template";
 import aboutJsonLocal from "../data/about.json";
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-const IMAGE_DIR = import.meta.env.VITE_IMAGE_DIR;
 
 interface AboutInfo {
     about: string;
@@ -64,7 +63,7 @@ export default function Home() {
                     rounded-lg
                     object-cover
                     "
-                src={`${IMAGE_DIR}/${image}`}
+                src={image}
                 alt=""
             />
         </Window>

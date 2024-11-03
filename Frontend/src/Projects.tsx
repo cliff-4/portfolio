@@ -3,7 +3,6 @@ import Window from "./Template";
 import projectJsonLocal from "../data/projects.json";
 
 const BACKEND_BASE_URL: string = import.meta.env.VITE_BACKEND_BASE_URL;
-const IMAGE_DIR = import.meta.env.VITE_IMAGE_DIR;
 
 interface projectCard {
     id: number;
@@ -140,11 +139,11 @@ const ProjectLine: React.FC<{ project: projectCard; setCurrProject: any }> = ({
         >
             <img
                 className="object-cover h-48 w-96 rounded-lg"
-                src={`${IMAGE_DIR}/${
+                src={
                     project.image_paths.length == 0
                         ? "default.jpg"
                         : project.image_paths[0]
-                }`}
+                }
                 alt={project.title}
             />
             <p className="break-words flex flex-col">
