@@ -2,46 +2,103 @@ import { useState } from "react";
 import Home from "./Home";
 import Contacts from "./Contact";
 import Projects from "./Projects";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
-const Pages = Object.freeze({
-    allPages: ["Home", "Projects", "Contact"],
-    HOME: 0,
-    PROJECTS: 1,
-    CONTACT: 2,
-});
+interface navButtonProps {
+    text: string;
+    linkto: string;
+    currPage: string;
+    setCurrPage: React.Dispatch<React.SetStateAction<string>>;
+}
 
-const currPage = (page: number) => {
-    switch (page) {
-        case Pages.HOME:
-            return <Home />;
-        case Pages.CONTACT:
-            return <Contacts />;
-        case Pages.PROJECTS:
-            return <Projects />;
-        default:
-            return <h1 className="text-white">An error occured... :(</h1>;
-    }
+function NavButton({ text, linkto, currPage, setCurrPage }: navButtonProps) {
+    const currButtonTheme = () => {
+        if (currPage == text) return "bg-theme3 text-theme6";
+        return "bg-theme6 text-theme3";
+    };
+    return (
+        <Link to={linkto}>
+            <button
+                className={
+                    `
+                rounded-lg p-2 text-lg
+                min-w-24 max-w-24
+                inline-flex items-center justify-center overflow-hidden
+                font-bold
+                hover:bg-theme3 hover:text-theme6
+                transition-all
+                font-mono
+                
+                ` + currButtonTheme()
+                }
+                onClick={() => {
+                    setCurrPage(text);
+                    console.log("Current page set to " + text);
+                }}
+            >
+                {text}
+            </button>
+        </Link>
+    );
+}
+
+const NavBar = () => {
+    const [currPage, setCurrPage] = useState("Home");
+    return (
+        <div className="absolute w-full bottom-10 flex justify-center">
+            <div
+                className="
+                    w-1/3 p-4
+                    rounded-lg
+                    flex justify-between 
+                    bg-theme1/90
+                "
+            >
+                <NavButton
+                    text="Home"
+                    linkto="/"
+                    currPage={currPage}
+                    setCurrPage={setCurrPage}
+                />
+                <NavButton
+                    text="Projects"
+                    linkto="/projects"
+                    currPage={currPage}
+                    setCurrPage={setCurrPage}
+                />
+                <NavButton
+                    text="Contact"
+                    linkto="/contact"
+                    currPage={currPage}
+                    setCurrPage={setCurrPage}
+                />
+            </div>
+        </div>
+    );
 };
 
 export default function App() {
-    const [page, setPage] = useState(0);
     return (
         <>
-            <button
-                className="
-                absolute bottom-10 left-10
-                min-w-24 max-w-24
-                inline-flex items-center justify-center overflow-hidden
-                bg-theme6 hover:text-white transition-all
-                font-mono
-                "
-                onClick={() => {
-                    setPage((page + 1) % Pages.allPages.length);
-                }}
-            >
-                {Pages.allPages[(page + 1) % Pages.allPages.length]}
-            </button>
-            {currPage(page)}
+            <BrowserRouter>
+                <NavBar />
+                <Routes>
+                    <Route path="/" Component={Home} />
+                    <Route path="/contact" Component={Contacts} />
+                    <Route path="/projects" Component={Projects} />
+                    <Route
+                        path="*"
+                        element={
+                            <>
+                                <h1 className="text-white">
+                                    Default Page Content
+                                </h1>
+                                {}
+                            </>
+                        }
+                    />
+                </Routes>
+            </BrowserRouter>
         </>
     );
 }
