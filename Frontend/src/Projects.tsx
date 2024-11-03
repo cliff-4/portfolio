@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Window from "./Template";
+import projectJsonLocal from "../data/projects.json";
 
 const BACKEND_BASE_URL: string = import.meta.env.VITE_BACKEND_BASE_URL;
 const IMAGE_DIR = import.meta.env.VITE_IMAGE_DIR;
@@ -37,7 +38,6 @@ const ProjectModal: React.FC<{
 
     return (
         <div
-            onClick={() => setCurrProject(null)}
             className={`
                 fixed inset-0 flex justify-center items-center
                 transition-colors
@@ -45,22 +45,52 @@ const ProjectModal: React.FC<{
             `}
         >
             <div
+                className="w-screen h-screen absolute z-0"
+                onClick={() => setCurrProject(null)}
+            />
+            <div
                 className="
                     flex flex-col gap-2
                     h-3/4 w-3/4
+                    z-10
                     p-5
                     rounded-lg
                     bg-theme3
 
                 "
             >
-                <div className="flex flex-row">
+                <div className="flex justify-between">
                     <span className="w-fit bg-theme4 p-2 rounded-2xl text-3xl font-mono">
                         {title}
                     </span>
-                    <button>X</button>
+                    <div
+                        className="
+                            bg-inherit hover:bg-red-500
+                            transition-all
+                            border-0
+                            h-fit w-fit
+                            rounded-full
+                            p-1
+                        "
+                        onClick={() => setCurrProject(null)}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18 18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </div>
                 </div>
-                <div className="w-full overflow-auto text-justify flex flex-col gap-2 rounded-lg">
+                <div className="w-full h-full overflow-auto text-justify flex flex-col gap-2 rounded-lg">
                     <p className="p-1 rounded-lg font-mono">{short}</p>
                     <div className="h-min w-full flex flex-row justify-center">
                         <iframe
@@ -75,7 +105,7 @@ const ProjectModal: React.FC<{
                     </div>
                     <p>{long}</p>
                 </div>
-                <div className="w-full text-right">
+                <div className="w-full text-left">
                     <span className="bg-theme4 p-1 rounded-lg text-sm font-mono">
                         Last edited: {last_update}
                     </span>
@@ -117,8 +147,10 @@ const ProjectLine: React.FC<{ project: projectCard; setCurrProject: any }> = ({
                 }`}
                 alt={project.title}
             />
-            <p className="break-all flex flex-col">
-                <span className="font-mono">{project.title}</span>
+            <p className="break-words flex flex-col">
+                <span className="font-mono text-lg font-medium">
+                    {project.title}
+                </span>
                 <span className="text-right">
                     <i className="right-0 text-sm">{formattedDate}</i>
                 </span>
@@ -133,6 +165,7 @@ const Projects = () => {
 
     useEffect(() => {
         const fetchProjects = async () => {
+            setProjects(projectJsonLocal as projectCard[]);
             try {
                 const response = await fetch(`${BACKEND_BASE_URL}/projects`);
                 const rawProjects = (await response.json()) as projectCard[];
@@ -156,8 +189,10 @@ const Projects = () => {
                         className="
                     flex-1 overflow-y-auto overflow-x-clip
                     mt-2 mb-10 p-5
-                    bg-theme5 rounded-lg
-                    grid grid-cols-4 grid-flow-row gap-5
+                    
+                    rounded-lg
+                    grid grid-flow-row gap-5
+                    sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5
                     "
                     >
                         {projects.map((project, index) => (
