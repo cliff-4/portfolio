@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Window from "./Template";
+import aboutJsonLocal from "../data/about.json";
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 const IMAGE_DIR = import.meta.env.VITE_IMAGE_DIR;
@@ -15,9 +16,8 @@ export default function Home() {
 
     useEffect(() => {
         const fetchAbout = async () => {
-            setAbout("Loading...");
-            setImage("default.jpg");
-
+            setAbout(aboutJsonLocal.about);
+            setImage(aboutJsonLocal.image);
             try {
                 const response = await fetch(`${BACKEND_BASE_URL}/about`);
                 const aboutJSON = (await response.json()) as AboutInfo;
@@ -25,7 +25,7 @@ export default function Home() {
                 setImage(aboutJSON.image);
                 console.log("Successfully procured About!");
             } catch (e: any) {
-                setAbout("An error occured while loading About... :(");
+                console.log("An error occured while loading About... :(");
                 console.log(e);
             }
         };
