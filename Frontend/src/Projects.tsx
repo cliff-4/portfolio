@@ -21,12 +21,12 @@ const ProjectModal: React.FC<{
     let short = "";
     let long = "";
     let last_update = "";
-    let image_paths = [""];
+    // let image_paths = [""];
     if (currProject != null) {
         title = currProject.title;
         short = currProject.short;
         long = currProject.long;
-        image_paths = currProject.image_paths;
+        // image_paths = currProject.image_paths;
         let rawDate = new Date(currProject.last_update);
         last_update = rawDate.toLocaleDateString("en-GB", {
             day: "2-digit",
@@ -54,9 +54,12 @@ const ProjectModal: React.FC<{
 
                 "
             >
-                <span className="w-fit bg-theme4 p-2 rounded-2xl text-3xl font-mono">
-                    {title}
-                </span>
+                <div className="flex flex-row">
+                    <span className="w-fit bg-theme4 p-2 rounded-2xl text-3xl font-mono">
+                        {title}
+                    </span>
+                    <button>X</button>
+                </div>
                 <div className="w-full overflow-auto text-justify flex flex-col gap-2 rounded-lg">
                     <p className="p-1 rounded-lg font-mono">{short}</p>
                     <div className="h-min w-full flex flex-row justify-center">
