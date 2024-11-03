@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Window from "./Template";
+import contactJsonLocal from "../data/contact.json";
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -123,6 +124,7 @@ const Contacts = () => {
 
     useEffect(() => {
         const fetchContacts = async () => {
+            setContact(contactJsonLocal as contactCard[]);
             try {
                 const response = await fetch(`${BACKEND_BASE_URL}/contact`);
                 setContact((await response.json()) as contactCard[]);
