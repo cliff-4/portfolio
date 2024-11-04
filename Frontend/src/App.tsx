@@ -21,11 +21,11 @@ function NavButton({ text, linkto, currPage, setCurrPage }: navButtonProps) {
             <button
                 className={
                     `
-                rounded-lg p-2 text-lg
+                border-none rounded-lg p-2 text-lg
                 min-w-24 max-w-24
                 inline-flex items-center justify-center overflow-hidden
                 font-bold
-                hover:bg-theme3 hover:text-theme6
+                hover:bg-theme3 hover:text-theme6 hover:scale-105
                 transition-all
                 font-mono
                 
@@ -48,9 +48,9 @@ const NavBar = () => {
         <div className="absolute w-full bottom-10 flex justify-center">
             <div
                 className="
-                    w-1/3 p-4
+                    w-fit p-4
                     rounded-lg
-                    flex justify-between 
+                    flex justify-between gap-4
                     bg-theme1/90
                 "
             >
