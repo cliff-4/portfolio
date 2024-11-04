@@ -5,12 +5,6 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    screens: {
-      sm: '480px',
-      md: '768px',
-      lg: '976px',
-      xl: '1440px',
-    },
     
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
@@ -26,7 +20,13 @@ export default {
         'theme4': '#91e3d5',
         'theme5': '#cdeeec',
         'theme6': '#005bb1',
-      }
+      },
+      // screens: {
+      //   sm: '480px',
+      //   md: '768px',
+      //   lg: '976px',
+      //   xl: '1440px',
+      // }
     },
   },
   plugins: [],
