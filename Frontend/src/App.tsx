@@ -3,6 +3,7 @@ import Home from "./Home";
 import Contacts from "./Contact";
 import Projects from "./Projects";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import Window from "./Template";
 
 interface navButtonProps {
     text: string;
@@ -22,7 +23,7 @@ function NavButton({ text, linkto, currPage, setCurrPage }: navButtonProps) {
                 className={
                     `
                 border-none rounded-lg p-2 text-lg
-                min-w-24 max-w-24
+                w-24
                 inline-flex items-center justify-center overflow-hidden
                 font-bold
                 hover:bg-theme3 hover:text-theme6 hover:scale-105
@@ -45,12 +46,12 @@ function NavButton({ text, linkto, currPage, setCurrPage }: navButtonProps) {
 const NavBar = () => {
     const [currPage, setCurrPage] = useState("Home");
     return (
-        <div className="absolute w-full bottom-10 flex justify-center">
+        <div className="absolute w-full px-5 bottom-5 lg:bottom-10 flex justify-center z-0">
             <div
                 className="
-                    w-fit p-4
+                    sm:w-fit p-2 m-2
                     rounded-lg
-                    flex justify-between gap-4
+                    flex justify-around gap-2 sm:gap-4 flex-row
                     bg-theme1/90
                 "
             >
@@ -81,23 +82,27 @@ export default function App() {
     return (
         <>
             <BrowserRouter>
+                <Window>
+                    <div className="h-full w-full flex flex-col">
+                        <Routes>
+                            <Route path="/" Component={Home} />
+                            <Route path="/contact" Component={Contacts} />
+                            <Route path="/projects" Component={Projects} />
+                            <Route
+                                path="*"
+                                element={
+                                    <>
+                                        <h1 className="text-white">
+                                            Default Page Content
+                                        </h1>
+                                        {}
+                                    </>
+                                }
+                            />
+                        </Routes>
+                    </div>
+                </Window>
                 <NavBar />
-                <Routes>
-                    <Route path="/" Component={Home} />
-                    <Route path="/contact" Component={Contacts} />
-                    <Route path="/projects" Component={Projects} />
-                    <Route
-                        path="*"
-                        element={
-                            <>
-                                <h1 className="text-white">
-                                    Default Page Content
-                                </h1>
-                                {}
-                            </>
-                        }
-                    />
-                </Routes>
             </BrowserRouter>
         </>
     );
