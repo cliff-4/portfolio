@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Window from "./Template";
 import contactJsonLocal from "../data/contact.json";
 
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
@@ -87,34 +86,38 @@ const ContactLine: React.FC<{ contact: contactCard }> = ({ contact }) => {
             ? ContactIcons[contact.name]
             : ContactIcons.Default;
     return (
-        <li className="flex space-x-3 group">
-            <a
-                href={contact.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                    text-black
-                    bg-theme4 rounded-lg m-1 px-2
-                    flex-none flex items-center justify-center
-                    group-hover:bg-theme6 group-hover:text-theme3 transition-all
-                "
-            >
-                {icon}
-            </a>
-            <a
-                href={contact.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                    bg-theme3 rounded-lg m-1 px-3 py-1
-                    shadow-sm group-hover:shadow-lg
-                    flex-1 text-center
-                    group-hover:scale-105 transition-all
-                    font-mono
-                "
-            >
-                {contact.display}
-            </a>
+        <li className="flex group">
+            <div className="w-full flex justify-center">
+                <a
+                    href={contact.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                        text-black
+                        bg-theme4 rounded-lg m-1 px-2
+                        flex-none flex items-center justify-center
+                        group-hover:bg-theme6 group-hover:text-theme3 transition-all
+                    "
+                >
+                    {icon}
+                </a>
+                <a
+                    href={contact.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                            min-w-[100px] max-w-[310px]
+                            bg-theme3 rounded-lg m-1 px-3 py-1
+                            shadow-sm group-hover:shadow-lg
+                            flex-1 text-center
+                            group-hover:scale-105 transition-all
+                            font-mono
+                            overflow-scroll
+                        "
+                >
+                    {contact.display}
+                </a>
+            </div>
         </li>
     );
 };
@@ -137,35 +140,35 @@ const Contacts = () => {
     }, []);
 
     return (
-        <Window>
-            <div className="flex flex-col">
+        <div className="h-full flex justify-center">
+            <div className="h-full w-full max-w-[500px]  flex flex-col p-5 justify-center">
                 <p
                     className="
-                        mb-2
-                        px-5 py-2
-                        w-fit
-                        bg-theme4
-                        rounded-lg
-                        text-2xl
-                        font-mono
-                    "
+                            mb-2
+                            px-5 py-2
+                            w-fit
+                            bg-theme4
+                            rounded-lg
+                            text-2xl
+                            font-mono
+                        "
                 >
                     Contact Me!
                 </p>
                 <ul
                     className="
-                        p-5
-                        bg-theme2 rounded-lg
-                        transition-all
-                        space-y-2
-                    "
+                            p-5
+                            bg-theme2 rounded-lg
+                            transition-all
+                            space-y-2
+                        "
                 >
                     {contacts.map((contact, index) => (
                         <ContactLine key={index} contact={contact} />
                     ))}
                 </ul>
             </div>
-        </Window>
+        </div>
     );
 };
 
