@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import Window from "./Template";
-import projectJsonLocal from "../data/projects.json";
+import projectJsonLocal from "../data/ProjectsData";
 
 const BACKEND_BASE_URL: string = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -8,10 +7,48 @@ interface projectCard {
     id: number;
     title: string;
     short: string;
-    long: string;
-    last_update: string;
+    body: JSX.Element;
     image_paths: string[];
+    last_update: string;
 }
+
+const Cross: React.FC<{
+    setCurrProject: (project: projectCard | null) => void;
+}> = ({ setCurrProject }) => {
+    return (
+        <div className="w-full flex justify-end">
+            <div
+                className="
+                absolute
+                                aspect-square
+                                bg-theme3 hover:bg-red-500
+                                transition-all
+                                border-0 border-theme2
+                                h-fit w-fit
+                                rounded-lg
+                                mt-1 mr-1
+                                p-1
+                            "
+                onClick={() => setCurrProject(null)}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                    />
+                </svg>
+            </div>
+        </div>
+    );
+};
 
 const ProjectModal: React.FC<{
     currProject: projectCard | null;
@@ -19,14 +56,13 @@ const ProjectModal: React.FC<{
 }> = ({ currProject, setCurrProject }) => {
     let title = "";
     let short = "";
-    let long = "";
+    let body = <div></div>;
     let last_update = "";
     // let image_paths = [""];
     if (currProject != null) {
         title = currProject.title;
         short = currProject.short;
-        long = currProject.long;
-        // image_paths = currProject.image_paths;
+        body = currProject.body;
         let rawDate = new Date(currProject.last_update);
         last_update = rawDate.toLocaleDateString("en-GB", {
             day: "2-digit",
@@ -39,73 +75,37 @@ const ProjectModal: React.FC<{
         <div
             className={`
                 fixed inset-0 flex justify-center items-center
-                transition-colors
+                transition-colors z-10
                 ${currProject != null ? "visible bg-black/40" : "invisible"}
             `}
         >
             <div
-                className="w-screen h-screen absolute z-0"
+                className="w-screen h-screen absolute"
                 onClick={() => setCurrProject(null)}
             />
+
             <div
                 className="
-                    flex flex-col gap-2
-                    h-3/4 w-3/4
-                    z-10
+                    z-0
+                    flex flex-col gap-0
+                    h-5/6 w-3/4
                     p-5
                     rounded-lg
                     bg-theme3
-
-                "
+                    
+                    "
             >
-                <div className="flex justify-between">
-                    <span className="w-fit bg-theme4 p-2 rounded-2xl text-3xl font-mono">
-                        {title}
-                    </span>
-                    <div
-                        className="
-                            bg-inherit hover:bg-red-500
-                            transition-all
-                            border-0
-                            h-fit w-fit
-                            rounded-full
-                            p-1
-                        "
-                        onClick={() => setCurrProject(null)}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 18 18 6M6 6l12 12"
-                            />
-                        </svg>
-                    </div>
-                </div>
+                <Cross setCurrProject={setCurrProject} />
+
+                <span className="w-full bg-theme4 p-2 rounded-lg text-3xl font-mono">
+                    {title}
+                </span>
                 <div className="w-full h-full overflow-auto text-justify flex flex-col gap-2 rounded-lg">
                     <p className="p-1 rounded-lg font-mono">{short}</p>
-                    <div className="h-min w-full flex flex-row justify-center">
-                        <iframe
-                            className="aspect-video rounded-lg max-w-[500px] w-full"
-                            src="https://www.youtube.com/embed/1Onjx9heU5o?si=2iDFR-tuSwSNpIyk"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        />
-                    </div>
-                    <p>{long}</p>
+                    {body}
                 </div>
                 <div className="w-full text-left">
-                    <span className="bg-theme4 p-1 rounded-lg text-sm font-mono">
+                    <span className="bg-theme4 p-1 px-2 rounded-md text-sm font-mono">
                         Last edited: {last_update}
                     </span>
                 </div>
@@ -179,13 +179,10 @@ const Projects = () => {
 
     return (
         <>
-            <Window>
-                <div className="flex flex-col h-full w-full">
-                    <h1 className="flex-none font-mono text-theme6">
-                        Projects!
-                    </h1>
-                    <div
-                        className="
+            <div className="flex flex-col h-full w-full p-2">
+                <h1 className="flex-none font-mono text-theme6">Projects!</h1>
+                <div
+                    className="
                     flex-1 overflow-y-auto overflow-x-clip
                     mt-2 mb-10 p-5
                     
@@ -193,17 +190,16 @@ const Projects = () => {
                     grid grid-flow-row gap-5
                     sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5
                     "
-                    >
-                        {projects.map((project, index) => (
-                            <ProjectLine
-                                key={index}
-                                project={project}
-                                setCurrProject={setCurrProject}
-                            />
-                        ))}
-                    </div>
+                >
+                    {projects.map((project, index) => (
+                        <ProjectLine
+                            key={index}
+                            project={project}
+                            setCurrProject={setCurrProject}
+                        />
+                    ))}
                 </div>
-            </Window>
+            </div>
             <ProjectModal
                 currProject={currProject}
                 setCurrProject={setCurrProject}
