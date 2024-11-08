@@ -4,6 +4,7 @@ import Contacts from "./Contact";
 import Projects from "./Projects";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Window from "./Template";
+import AboutWebsite from "./AboutWebsite";
 
 interface navButtonProps {
     text: string;
@@ -68,6 +69,12 @@ const NavBar = () => {
                     setCurrPage={setCurrPage}
                 />
                 <NavButton
+                    text="About"
+                    linkto="/about"
+                    currPage={currPage}
+                    setCurrPage={setCurrPage}
+                />
+                <NavButton
                     text="Contact"
                     linkto="/contact"
                     currPage={currPage}
@@ -88,6 +95,7 @@ export default function App() {
                             <Route path="/" Component={Home} />
                             <Route path="/contact" Component={Contacts} />
                             <Route path="/projects" Component={Projects} />
+                            <Route path="/about" Component={AboutWebsite} />
                             <Route
                                 path="*"
                                 element={
