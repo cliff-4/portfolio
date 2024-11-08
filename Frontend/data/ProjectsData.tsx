@@ -1,6 +1,6 @@
-let data = [
+const data = [
     {
-        id: 1,
+        id: -1,
         title: "Bad Apple on Command Prompt",
         short: "I made this 3 years ago on command prompt over night when I was bored",
         body: (
@@ -55,7 +55,7 @@ let data = [
         image_paths: ["Bad Apple Thumbnail.png"],
     },
     {
-        id: 2,
+        id: -1,
         title: "Cloff",
         short: "Default Short Description",
         body: <div></div>,
@@ -63,7 +63,7 @@ let data = [
         image_paths: ["cloff.jpg"],
     },
     {
-        id: 3,
+        id: -1,
         title: "Portfolio website",
         short: "Default Short Description",
         body: <div></div>,
@@ -71,7 +71,7 @@ let data = [
         image_paths: ["portfolio thumbnail.gif"],
     },
     {
-        id: 4,
+        id: -1,
         title: "Virtual Marketplace",
         short: "Default Short Description",
         body: (
@@ -99,7 +99,7 @@ let data = [
         image_paths: ["Virtual Market.png"],
     },
     {
-        id: 5,
+        id: -1,
         title: "Panchayati Raj",
         short: "Default Short Description",
         body: <div></div>,
@@ -107,7 +107,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 6,
+        id: -1,
         title: "Tennis game",
         short: "Default Short Description",
         body: <div></div>,
@@ -115,7 +115,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 7,
+        id: -1,
         title: "Horn Antenna",
         short: "Default Short Description",
         body: <div></div>,
@@ -123,7 +123,24 @@ let data = [
         image_paths: [],
     },
     {
-        id: 8,
+        id: -1,
+        title: "VS Code Extension: File Size on Toolbar",
+        short: "A VS Code Extension to display text file sizes on the toolbar below because I am fed-up of VS Code not including it in the main app.",
+        body: (
+            <div>
+                <a href="https://github.com/cliff-4/VSC-file-size-on-toolbar">
+                    GitHub
+                </a>
+                <a href="https://marketplace.visualstudio.com/items?itemName=cliff-4.file-size-on-toolbar">
+                    Visual Studio Code Marketplace
+                </a>
+            </div>
+        ),
+        last_update: "2024-10-21",
+        image_paths: [],
+    },
+    {
+        id: -1,
         title: "TriGrapher",
         short: "Default Short Description",
         body: <div></div>,
@@ -131,7 +148,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 9,
+        id: -1,
         title: "Resolv",
         short: "Default Short Description",
         body: <div></div>,
@@ -139,7 +156,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 10,
+        id: -1,
         title: "TIFR",
         short: "Default Short Description",
         body: <div></div>,
@@ -147,7 +164,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 11,
+        id: -1,
         title: "BTP-1",
         short: "Default Short Description",
         body: <div></div>,
@@ -155,7 +172,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 12,
+        id: -1,
         title: "CDSR Mini project",
         short: "Default Short Description",
         body: <div></div>,
@@ -163,7 +180,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 13,
+        id: -1,
         title: "ChainMyName",
         short: "Default Short Description",
         body: <div></div>,
@@ -171,7 +188,7 @@ let data = [
         image_paths: [],
     },
     {
-        id: 14,
+        id: -100,
         title: "ClaMedR",
         short: "Default Short Description",
         body: <div></div>,
@@ -179,5 +196,9 @@ let data = [
         image_paths: [],
     },
 ];
+
+for (let i = 1; i <= data.length; i++) {
+    data[i].id = i;
+}
 
 export default data;
