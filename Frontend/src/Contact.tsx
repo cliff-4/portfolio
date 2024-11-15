@@ -9,7 +9,7 @@ interface contactCard {
     link: string;
 }
 
-let ContactIcons = {
+const ContactIcons = {
     GitHub: (
         <svg
             className="w-4 h-4"
@@ -132,7 +132,7 @@ const Contacts = () => {
                 const response = await fetch(`${BACKEND_BASE_URL}/contact`);
                 setContact((await response.json()) as contactCard[]);
                 console.log("Successfully procured Contacts!");
-            } catch (e: any) {
+            } catch (e) {
                 console.log(e);
             }
         };

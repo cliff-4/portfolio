@@ -45,7 +45,7 @@ export default function Home() {
                 setAbout(aboutJSON.about);
                 setImage(aboutJSON.image);
                 console.log("Successfully procured About!");
-            } catch (e: any) {
+            } catch (e) {
                 console.log("An error occured while loading About... :(");
                 console.log(e);
             }
